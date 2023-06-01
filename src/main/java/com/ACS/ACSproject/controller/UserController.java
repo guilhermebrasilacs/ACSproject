@@ -2,6 +2,7 @@ package com.ACS.ACSproject.controller;
 
 import com.ACS.ACSproject.dto.UserDTO;
 import jakarta.annotation.PostConstruct;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,5 +50,14 @@ public class UserController {
     @GetMapping
     public List<UserDTO> getUsers(){
         return usuarios;
+    }
+
+    @GetMapping("/{cpf}")
+    public UserDTO getUsersFiltro(@PathVariable String cpf){
+        return usuarios
+                .stream()
+                .filter(userDTO -> userDTO.getCpf().equals(cpf))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("User not found."));
     }
 }
