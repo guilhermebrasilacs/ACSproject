@@ -51,11 +51,11 @@ public class UserController {
         return usuarios;
     }
 
-    @GetMapping("/{cpf}")
-    public UserDTO getUsersFiltro(@PathVariable String cpf){
+    @GetMapping("/{nome}")
+    public UserDTO getUsersFiltro(@PathVariable String nome){
         return usuarios
                 .stream()
-                .filter(userDTO -> userDTO.getCpf().equals(cpf))
+                .filter(userDTO -> userDTO.getNome().equals(nome))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("User not found."));
     }
@@ -66,5 +66,11 @@ public class UserController {
         userDTO.setDataCadastro(LocalDateTime.now());
         usuarios.add(userDTO);
         return userDTO;
+    }
+
+    @DeleteMapping("/{cpf}")
+    public boolean remover(@PathVariable String cpf){
+        return usuarios
+                .removeIf(userDTO -> userDTO.getCpf().equals(cpf));
     }
 }
