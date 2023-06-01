@@ -2,10 +2,9 @@ package com.ACS.ACSproject.controller;
 
 import com.ACS.ACSproject.dto.UserDTO;
 import jakarta.annotation.PostConstruct;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -59,5 +58,13 @@ public class UserController {
                 .filter(userDTO -> userDTO.getCpf().equals(cpf))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("User not found."));
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDTO inserir(@RequestBody @Valid UserDTO userDTO){
+        userDTO.setDataCadastro(LocalDateTime.now());
+        usuarios.add(userDTO);
+        return userDTO;
     }
 }
